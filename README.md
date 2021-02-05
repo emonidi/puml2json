@@ -9,6 +9,10 @@
 a command line utility that convert Plantuml -text file that represent class UML diagram to source code.
 puml parser based on [plantuml-code-generator](https://github.com/bafolts/plantuml-code-generator) but is rewritten with es6.
 
+This fork adds:
+- the puml element compontent
+- json as an output format
+
 ### Installation
 
 Global installation brings `puml2code` command to PATH
