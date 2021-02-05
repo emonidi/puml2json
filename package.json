@@ -1,14 +1,14 @@
 {
-  "name": "puml2code",
-  "version": "0.7.0",
-  "description": "PlantUML to code generator",
+  "name": "puml2json",
+  "version": "0.0.1",
+  "description": "PlantUML to json generator",
   "main": "index.js",
   "bin": {
-    "puml2code": "./bin/puml2code"
+    "puml2json": "./bin/puml2json"
   },
   "scripts": {
     "cli": "node src/cli.js",
-    "test": "MOCHA_FILE=junit/test-results.xml istanbul cover -- _mocha --recursive -R mocha-circleci-reporter",
+    "test": "MOCHA_FILE=junit/test-results.xml nyc cover -- _mocha --recursive -R mocha-circleci-reporter",
     "lint": "eslint .",
     "lint-fix": "eslint . --fix",
     "install": "node node_modules/pegjs/bin/pegjs src/parser/plantuml.pegjs",
@@ -16,11 +16,11 @@
     "prepare": "npm run snyk-protect"
   },
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=12.0.0"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jupe/puml2code.git"
+    "url": "git+https://github.com/robbito/puml2json.git"
   },
   "keywords": [
     "plantuml",
@@ -32,33 +32,33 @@
     "class",
     "diagram"
   ],
-  "author": "Jussi Vatjus-Anttila",
+  "author": "Peter Kullmann",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jupe/puml2code/issues"
+    "url": "https://github.com/robbito/puml2json/issues"
   },
-  "homepage": "https://github.com/jupe/puml2code#readme",
+  "homepage": "https://github.com/robbito/puml2json#readme",
   "dependencies": {
     "bluebird": "^3.7.2",
-    "camelcase": "^5.2.0",
-    "commander": "^4.1.1",
-    "debug": "^4.3.0",
-    "handlebars": "^4.1.1",
+    "camelcase": "^6.2.0",
+    "commander": "^7.0.0",
+    "debug": "^4.3.1",
+    "handlebars": "^4.7.6",
     "lodash": "^4.17.20",
     "pegjs": "^0.10.0",
-    "snyk": "^1.316.1"
+    "snyk": "^1.446.0"
   },
   "devDependencies": {
-    "chai": "^4.2.0",
+    "chai": "^4.3.0",
     "chai-as-promised": "^7.1.1",
-    "eslint": "^5.15.3",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-chai-expect": "^2.0.1",
-    "eslint-plugin-import": "^2.16.0",
-    "eslint-plugin-mocha": "^5.3.0",
-    "istanbul": "^1.1.0-alpha.1",
+    "eslint": "^7.19.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-chai-expect": "^2.2.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-mocha": "^8.0.0",
+    "nyc": "^15.1.0",
     "mocha-circleci-reporter": "0.0.3",
-    "sinon": "^9.0.0"
+    "sinon": "^9.2.4"
   },
   "snyk": true
 }

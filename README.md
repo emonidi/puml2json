@@ -1,5 +1,3 @@
-[![npm version](https://badge.fury.io/js/puml2code.svg)](https://badge.fury.io/js/puml2code)
-[![CircleCI](https://circleci.com/gh/jupe/puml2code/tree/master.svg?style=svg)](https://circleci.com/gh/jupe/puml2code/tree/master)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![License badge](https://img.shields.io/badge/license-MIT-blue.svg)](https://img.shields.io) 
 
@@ -7,7 +5,7 @@
 ## PlantUML json generator (puml2json)
 
 a command line utility that convert Plantuml -text file that represent class UML diagram to source code.
-This fork is based on [puml2code]() .
+This fork is based on [puml2json]() .
 
 This fork adds:
 - the puml element compontent
@@ -34,7 +32,7 @@ $ npm test
 
 
 ### Supported output languages
-* [CoffeeScript](test/data/car.coffeescript.coffee) (coffeescript)
+* [JSON](test/data/car.coffeescript.coffee) (coffeescript)
 * [C#](test/data/car.csharp.cs) (csharp)
 * [C++](test/data/car.cpp.cpp) (cpp)
 * [ECMAScript5](test/data/car.ecmascript5.js) (ecmascript5)
@@ -82,7 +80,7 @@ parser and code templates are not perfect. There is planty of cases that is not 
 
 ### Problems?
 
-* If `puml2code` causes error like:
+* If `puml2json` causes error like:
     ```
     Error: line: 21 column: 3: SyntaxError: Expected "'", "--", "..", "__", "abstract ", 
     "class ", "hide empty members", "interface ", "namespace ", "note ", "skinparam", "title ",
@@ -108,8 +106,8 @@ parser and code templates are not perfect. There is planty of cases that is not 
 ### Usage
 
 ```
-$ puml2code -h
-Usage: puml2code [options]
+$ puml2json -h
+Usage: puml2json [options]
 
 Options:
   -V, --version       output the version number
@@ -121,15 +119,15 @@ Options:
 Supported languages: coffeescript, csharp, ecmascript5, ecmascript6, java, php, python, ruby, typescript
 
 Examples:
-  $ puml2code -i input.puml -l ecmascript6
-  $ puml2code -h
-Use DEBUG=puml2code env variable to get traces. Example:
-  $ DEBUG=puml2code puml2code -i input.puml
+  $ puml2json -i input.puml -l ecmascript6
+  $ puml2json -h
+Use DEBUG=puml2json env variable to get traces. Example:
+  $ DEBUG=puml2json puml2json -i input.puml
 ```
 
 e.g.
 ```
-$ puml2code -i myfile.puml
+$ puml2json -i myfile.puml
 
 Scheduler.js:
 // native modules

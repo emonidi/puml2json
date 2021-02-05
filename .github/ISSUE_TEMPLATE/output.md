@@ -4,9 +4,9 @@
 ---------------------------------------------------------------
 ## Bug
 
-**puml2code version**
+**puml2json version**
 
-(`git describe --tags` / `puml2code -V`)
+(`git describe --tags` / `puml2json -V`)
 
 **Selected output language**
 
@@ -14,11 +14,11 @@ ecmascript6
 
 **Expected output**
 ```js
-...
+//...
 ```
 
 **Actual output**
 ```js
-...
+//...
 ```
 

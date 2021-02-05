@@ -4,9 +4,9 @@
 ---------------------------------------------------------------
 ## Bug
 
-**puml2code version**
+**puml2json version**
 
-(`git describe --tags` / `puml2code -V`)
+(`git describe --tags` / `puml2json -V`)
 
 **plantuml file that reproduce issue**
 
