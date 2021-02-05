@@ -4,10 +4,10 @@
 [![License badge](https://img.shields.io/badge/license-MIT-blue.svg)](https://img.shields.io) 
 
 
-## PlantUML code generator (puml2code)
+## PlantUML json generator (puml2json)
 
 a command line utility that convert Plantuml -text file that represent class UML diagram to source code.
-puml parser based on [plantuml-code-generator](https://github.com/bafolts/plantuml-code-generator) but is rewritten with es6.
+This fork is based on [puml2code]() .
 
 This fork adds:
 - the puml element compontent
@@ -15,16 +15,16 @@ This fork adds:
 
 ### Installation
 
-Global installation brings `puml2code` command to PATH
+Global installation brings `puml2json` command to PATH
 ```bash
-$ npm i -g puml2code
+$ npm i -g puml2json
 ```
 
 Development installation
 ```bash
-$ git clone https://github.com/jupe/puml2code.git
+$ git clone https://github.com/robbito/puml2json.git
 $ npm i
-$ bin/puml2code -h
+$ bin/puml2json -h
 ```
 
 Running tests
