@@ -1,9 +1,8 @@
 const { Readable } = require('stream');
-const { join } = require('path');
-const { createReadStream, readFile } = require('fs');
+const path = require('path');
+const { createReadStream } = require('fs');
 // 3rd party modules
 const Promise = require('bluebird');
-const Handlebars = require('handlebars');
 const _ = require('lodash');
 // application modules
 const parser = require('./parser');
@@ -12,41 +11,11 @@ const dummyLogger = require('./logger');
 
 const { SyntaxError } = parser;
 
-
-class PlantUmlToCode {
-  constructor(stream, { logger = dummyLogger } = {}) {
+class PlantUmlToJson {
+  constructor(stream, file, { logger = dummyLogger } = {}) {
     this._stream = stream;
+    this.file = file;
     this.logger = logger;
-    PlantUmlToCode._registerHandlebarsHelpers();
-  }
-
-  static _registerHandlebarsHelpers() {
-    // helper to avoid escape rendering
-    // Usage
-    // {{SafeString this getName}} where 'this' is an class instance and 'getName' are instance function
-    // or
-    // {{SafeString this}} where 'this' is an string
-    const SafeString = (context, method) => new Handlebars.SafeString(
-      _.isFunction(method) ? method.call(context) : context,
-    );
-    Handlebars.registerHelper('SafeString', SafeString);
-
-    // Workaround for an apparent bug in Handlebars: functions are not called with the parent scope
-    // as context.
-    //
-    // Here the getFullName is found in the parent scope (Class), but it is called with the current
-    // scope (Field) as context:
-    //
-    // {{#each getFields}}
-    //   {{../getFullName}}
-    // {{/each}}
-    //
-    // The following helper works around it:
-    //
-    // {{#each getFields}}
-    //   {{#call ../this ../getFullName}}
-    // {{/each}}
-    Handlebars.registerHelper('call', (context, member) => member.call(context));
   }
 
   static fromString(str) {
@@ -57,11 +26,11 @@ class PlantUmlToCode {
     stream._read = () => {}; // redundant? see update below
     stream.push(str);
     stream.push(null);
-    return new PlantUmlToCode(stream);
+    return new PlantUmlToJson(stream, "puml");
   }
 
   static fromFile(file) {
-    return new PlantUmlToCode(createReadStream(file));
+    return new PlantUmlToJson(createReadStream(file), file);
   }
 
   static async _readStream(stream) {
@@ -73,11 +42,11 @@ class PlantUmlToCode {
     });
   }
 
-  async generate(lang = 'ecmascript6') {
+  async generate() {
     this.logger.silly('Reading puml data');
     try {
-      const str = await PlantUmlToCode._readStream(this._stream);
-      const files = await this._toCode(str, lang);
+      const str = await PlantUmlToJson._readStream(this._stream);
+      const files = await this._toCode(str);
       return new Output(files, { logger: this.logger });
     } catch (error) {
       if (error instanceof SyntaxError) {
@@ -90,62 +59,18 @@ class PlantUmlToCode {
     }
   }
 
-  static get templateFiles() {
-    return _.reduce(PlantUmlToCode.languages, (acc, lang) => {
-      acc[lang] = join(__dirname, 'templates', `${lang}.hbs`);
-      return acc;
-    }, {});
-  }
-
-  async _readTemplate(lang) {
-    const tmpl = PlantUmlToCode.templateFiles[lang];
-    this.logger.silly(`Read template: ${tmpl}`);
-    let source = await Promise.fromCallback(cb => readFile(tmpl, cb));
-    source = source.toString();
-    return Handlebars.compile(source, { noEscape: true });
-  }
-
-  static get languages() {
-    return _.keys(PlantUmlToCode.extensions);
-  }
-
-  static get extensions() {
-    return {
-      coffeescript: 'coffee',
-      csharp: 'cs',
-      ecmascript5: 'js',
-      ecmascript6: 'js',
-      java: 'java',
-      php: 'php',
-      python: 'py',
-      ruby: 'rb',
-      typescript: 'ts',
-      cpp: 'h',
-    };
-  }
-
-  static getExtension(lang) {
-    return _.get(PlantUmlToCode.extensions, lang, 'js');
-  }
-
   /**
    * @param {string} pegjs rules
-   * @param {string} lang Target language
    * @returns {string} class code as a string
    * @private
    */
-  async _toCode(data, lang) {
-    const template = await this._readTemplate(lang);
-    const aUMLBlocks = await parser(data);
+  async _toCode(data) {
+    const block = await parser(data);
+    const fileName = path.parse(this.file).name;
     const files = {};
-    const extension = PlantUmlToCode.getExtension(lang);
-    aUMLBlocks.forEach((project) => {
-      project.getClasses().forEach((element) => {
-        files[`${element.getFullName()}.${extension}`] = template(element);
-      });
-    });
+    files[`${fileName}.json`] = JSON.stringify(block);
     return files;
   }
 }
 
-module.exports = PlantUmlToCode;
+module.exports = PlantUmlToJson;

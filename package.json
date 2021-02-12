@@ -8,12 +8,10 @@
   },
   "scripts": {
     "cli": "node src/cli.js",
-    "test": "MOCHA_FILE=junit/test-results.xml nyc cover -- _mocha --recursive -R mocha-circleci-reporter",
+    "test": "MOCHA_FILE=junit/test-results.xml nyc cover -- _mocha --recursive",
     "lint": "eslint .",
     "lint-fix": "eslint . --fix",
-    "install": "node node_modules/pegjs/bin/pegjs src/parser/plantuml.pegjs",
-    "snyk-protect": "snyk protect",
-    "prepare": "npm run snyk-protect"
+    "install": "node node_modules/pegjs/bin/pegjs src/parser/plantuml.pegjs"
   },
   "engines": {
     "node": ">=12.0.0"
@@ -43,10 +41,8 @@
     "camelcase": "^6.2.0",
     "commander": "^7.0.0",
     "debug": "^4.3.1",
-    "handlebars": "^4.7.6",
     "lodash": "^4.17.20",
-    "pegjs": "^0.10.0",
-    "snyk": "^1.446.0"
+    "pegjs": "^0.10.0"
   },
   "devDependencies": {
     "chai": "^4.3.0",
@@ -57,8 +53,6 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-mocha": "^8.0.0",
     "nyc": "^15.1.0",
-    "mocha-circleci-reporter": "0.0.3",
     "sinon": "^9.2.4"
-  },
-  "snyk": true
+  }
 }

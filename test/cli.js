@@ -13,7 +13,6 @@ const inputPumlList = ['./test/data/car'];
 const { expect } = chai;
 chai.use(chaiAsPromised);
 
-
 describe('cli', () => {
   let exit;
   beforeEach(() => {

@@ -2,7 +2,7 @@
 const _ = require('lodash');
 const program = require('commander');
 // application modules
-const Puml = require('./');
+const Puml = require('./index');
 const logger = require('./logger');
 
 const options = new RegExp(`^(${_.reduce(Puml.languages, (acc, ext) => `${acc}${ext}|`, '')})$`, 'i');
@@ -17,10 +17,10 @@ const parseArgs = argv => program
     print(`Supported languages: ${Puml.languages.join(', ')}`);
     print('');
     print('Examples:');
-    print('  $ puml2code -i input.puml -l ecmascript6');
-    print('  $ puml2code -h');
-    print('Use DEBUG=puml2code env variable to get traces. Example:');
-    print('  $ DEBUG=puml2code puml2code -i input.puml');
+    print('  $ puml2json -i input.puml -l ecmascript6');
+    print('  $ puml2json -h');
+    print('Use DEBUG=puml2json env variable to get traces. Example:');
+    print('  $ DEBUG=puml2json puml2json -i input.puml');
   })
   .parse(argv);
 
@@ -31,8 +31,7 @@ const fromStdin = () => {
 };
 const fromFile = input => Promise.resolve(Puml.fromFile(input));
 
-
-const getSource = (args) => {
+const getSource = args => {
   if (!args.input) {
     console.error('Error: input option is required'); // eslint-disable-line no-console
     args.help();
@@ -49,7 +48,7 @@ const execute = async (argv = process.argv, printer = console.log) => { // eslin
   let args = { removeAllListeners: () => {} };
   try {
     args = parseArgs(argv);
-    const puml = await getSource(args);
+    const puml = await getSource(args.opts());
     const output = await puml.generate(args.lang);
     if (args.out) {
       await output.save(args.out);

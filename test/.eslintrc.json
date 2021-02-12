@@ -13,6 +13,7 @@
         "no-unused-expressions": "off",
         "prefer-arrow-callback": "off",
         "func-names": "off",
-        "no-underscore-dangle": "off"
+        "no-underscore-dangle": "off",
+        "allow-parens": "as-needed"
     }
 }

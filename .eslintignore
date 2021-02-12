@@ -3,3 +3,4 @@ doc/
 coverage/
 src/parser/plantuml.js
 test/data
+.eslintrc.js

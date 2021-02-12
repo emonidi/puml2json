@@ -1,0 +1,22 @@
+{
+    components: [
+        {{#each components}}
+            {"name": "{{name}}", "type": "{{type}}"},
+        {{/each}}
+        ],
+    databases: [
+        {{#each databases}}
+            {"name": "{{name}}", "type": "{{type}}"},
+        {{/each}}
+        ],
+    interfaces: [
+        {{#each interfaces}}
+            {"name": "{{name}}", "component": "{{component}}"},
+        {{/each}}
+        ],
+    notes: [
+        {{#each notes}}
+            {"name": "{{name}}", "props": {{props}} },
+        {{/each}}
+    ]
+}

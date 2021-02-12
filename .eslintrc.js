@@ -14,6 +14,7 @@ module.exports = {
   },
   rules: {
     "max-len": ["error", {"code": 120, "tabWidth": 4, "ignoreUrls": true}],
-    "no-underscore-dangle": ["off"]
+    "no-underscore-dangle": ["off"],
+    "arrow-parens": ["error", "as-needed"]
   },
 };

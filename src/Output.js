@@ -5,7 +5,6 @@ const { writeFile, mkdir } = require('fs');
 const Promise = require('bluebird');
 const _ = require('lodash');
 
-
 class Output {
   constructor(files, { logger }) {
     this.logger = logger;
