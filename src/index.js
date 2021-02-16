@@ -1,12 +1,10 @@
 const { Readable } = require('stream');
-const path = require('path');
 const { createReadStream } = require('fs');
 // 3rd party modules
 const Promise = require('bluebird');
 const _ = require('lodash');
 // application modules
 const parser = require('./parser');
-const Output = require('./Output');
 const dummyLogger = require('./logger');
 
 const { SyntaxError } = parser;
@@ -26,7 +24,7 @@ class PlantUmlToJson {
     stream._read = () => {}; // redundant? see update below
     stream.push(str);
     stream.push(null);
-    return new PlantUmlToJson(stream, "puml");
+    return new PlantUmlToJson(stream);
   }
 
   static fromFile(file) {
@@ -43,11 +41,9 @@ class PlantUmlToJson {
   }
 
   async generate() {
-    this.logger.silly('Reading puml data');
     try {
       const str = await PlantUmlToJson._readStream(this._stream);
-      const files = await this._toCode(str);
-      return new Output(files, { logger: this.logger });
+      return await parser(str);
     } catch (error) {
       if (error instanceof SyntaxError) {
         const str = `line: ${error.location.start.line} column: ${error.location.start.column}: ${error}`;
@@ -57,19 +53,6 @@ class PlantUmlToJson {
       this.logger.error(error);
       throw error;
     }
-  }
-
-  /**
-   * @param {string} pegjs rules
-   * @returns {string} class code as a string
-   * @private
-   */
-  async _toCode(data) {
-    const block = await parser(data);
-    const fileName = path.parse(this.file).name;
-    const files = {};
-    files[`${fileName}.json`] = JSON.stringify(block);
-    return files;
   }
 }
 

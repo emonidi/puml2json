@@ -8,13 +8,13 @@
     }
 }
 plantumlfile
-  = (noise newline)* noise "@startuml" noise newline umllines noise "@enduml" (noise newline)* {return block;}
-startblock
-  = noise "{" noise
-endblock
-  = noise "}"
-noise
+  = (_ newline)* _ "@startuml" _ newline umllines _ "@enduml" (_ newline)* {return block;}
+_
   = [ \t]*
+startblock
+  = _ "{" _
+endblock
+  = _ "}"
 splitter
   = ":"
 newline
@@ -23,39 +23,41 @@ newline
 color
   = [#][0-9a-fA-F]+
 umllines
-  = lines:(umlline*)
+  = lines:umlline*
 notelines
-  = lines:(noteline*) {return lines.filter(line => line).reduce((map, prop) => {map[prop[0]] = prop[1]; return map;}, {});}
+  = lines:noteline* {return lines.filter(line => line).reduce((map, prop) => {map[prop[0]] = prop[1]; return map;}, {});}
 umlline
   = titleset newline
   / headerset newline
-  / noise newline
-  / commentline
-  / declaration:componentdeclaration newline { block.components.push(declaration);}
-  / declaration:databasedeclaration newline { block.databases.push(declaration);}
-  / declaration:notedeclaration newline { block.notes.push(declaration);}
-  / declaration:interfacedeclaration newline { block.interfaces.push(declaration);}
-  / declaration:usesdeclaration newline { block.uses.push(declaration);}
+  / _ newline
+  / comment newline
+  / declaration newline
+declaration
+  = declaration:componentdeclaration { block.components.push(declaration);}
+  / declaration:databasedeclaration { block.databases.push(declaration);}
+  / declaration:notedeclaration { block.notes.push(declaration);}
+  / declaration:interfacedeclaration { block.interfaces.push(declaration);}
+  / declaration:usesdeclaration { block.uses.push(declaration);}
 noteline
-  = noise property:propertyname ":"  noise value:propertyvalue noise newline {return [property, value];}
-  / commentline {return null;}
-  / noise newline {return null;}
+  = _ property:propertyname ":"  _ value:propertyvalue _ newline {return [property, value];}
+  / comment newline {return null;}
+  / _ newline {return null;}
 titleset
-  = noise "title " noise [^\r\n]+ noise
+  = _ "title " _ [^\r\n]+ _
 headerset
-  = noise "header" noise [^\r\n]+ noise
-commentline
-  = noise "'" [^\r\n]*
+  = _ "header " _ [^\r\n]+ _
+comment
+  = _ "'" [^\r\n]*
 componentdeclaration
-  = noise "component " noise componentname:objectname noise "<<" archetype:componentarchetype ">>" noise {return {name: componentname, type: archetype};}
+  = _ "component " _ name:objectname _ archetype:archetypename? {return {name, type: archetype || "service"};}
 databasedeclaration
-  = noise "database " noise databasename:objectname noise "<<" archetype:databasearchetype ">>" noise {return {name: databasename, type: archetype};}
+  = _ "database " _ name:objectname _ archetype:archetypename? {return {name, type: archetype || "database"};}
 notedeclaration
-  = noise "note " noise noteposition noise name:objectname startblock newline lines:notelines endblock {return {name: name, props: lines};}
+  = _ "note " _ noteposition _ name:objectname startblock newline props:notelines endblock {return {name, props};}
 interfacedeclaration
-  = noise "()" noise interfacename:objectname noise "-" noise component:componentref noise {return {name: interfacename, component: component};}
+  = _ "() " _ name:objectname _ "-" _ component:componentref _ {return {name, component};}
 usesdeclaration
-  = component:componentref noise ".>" noise interfacename:objectname noise {return {component: component, interface: interfacename};}
+  = component:componentref _ ".>" _ iface:objectname _ {return {component, interface: iface};}
 noteposition
   = "left of"
   / "right of"
@@ -65,14 +67,12 @@ id
   = id:([A-Za-z_][A-Za-z0-9.]*) {return [id[0], id[1].join("")].join("")}
 objectname
   = id
-  / "\"" objectname:[^\"]* "\"" {return objectname.join(""); }
+  / "\"" name:[^\"]* "\"" {return name.join(""); }
 componentref
   = id
   / [\[] name:[^\]]* [\]] {return name.join("");}
-componentarchetype
-  = archetype:"service" {return archetype;}
-databasearchetype
-  = archetype:"SQL" {return archetype;}
+archetypename
+  = "<<" name:id ">>" {return name;}
 propertyname
   = id
 propertyvalue

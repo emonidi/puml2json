@@ -1,23 +1,21 @@
+const path = require('path');
 // 3rd party modules
 const _ = require('lodash');
 const program = require('commander');
 // application modules
 const Puml = require('./index');
 const logger = require('./logger');
+const Output = require('./Output');
 
-const options = new RegExp(`^(${_.reduce(Puml.languages, (acc, ext) => `${acc}${ext}|`, '')})$`, 'i');
 const parseArgs = argv => program
   .version('0.1.0')
   .option('-i, --input [file]', 'input .puml file, or "stdin"')
-  .option('-l, --lang [lang]', 'Optional output source code language', options, 'ecmascript6')
   .option('-o, --out [path]', 'Output path. When not given output is printed to console.')
   .on('--help', () => {
     const print = console.log; // eslint-disable-line no-console
     print('');
-    print(`Supported languages: ${Puml.languages.join(', ')}`);
-    print('');
     print('Examples:');
-    print('  $ puml2json -i input.puml -l ecmascript6');
+    print('  $ puml2json -i input.puml');
     print('  $ puml2json -h');
     print('Use DEBUG=puml2json env variable to get traces. Example:');
     print('  $ DEBUG=puml2json puml2json -i input.puml');
@@ -49,7 +47,10 @@ const execute = async (argv = process.argv, printer = console.log) => { // eslin
   try {
     args = parseArgs(argv);
     const puml = await getSource(args.opts());
-    const output = await puml.generate(args.lang);
+    const json = await puml.generate();
+    const files = {};
+    files[`${path.parse(puml.file || 'puml').name}.json`] = JSON.stringify(json);
+    const output = new Output(files, { logger });
     if (args.out) {
       await output.save(args.out);
     } else {
