@@ -20,35 +20,19 @@ describe('pumlgen', () => {
     expect(Puml.fromString).to.be.an('function');
   });
 
-  describe('_toCode', () => {
-    let puml;
-    beforeEach(() => {
-      puml = new Puml();
-    });
-    it('unknown', () => {
-      expect(puml._toCode({}, 'unknown')).to.eventually.rejectedWith(TypeError);
-    });
-  });
-
   describe('from', () => {
     it('String with invalid parameter', () => {
       expect(() => Puml.fromString({})).to.throw();
     });
     it('String', async () => {
-      const puml = Puml.fromString('@startuml\nclass Hep {\n}\n@enduml\n');
-      const output = await puml.generate('ecmascript6');
+      const puml = Puml.fromString('@startuml\ncomponent Test\n@enduml\n');
+      const output = await puml.generate();
       expect(output).to.be.ok;
-      const log = spy();
-      output.print(log);
-      expect(log.calledOnce).to.be.true;
     });
     it('File', async () => {
       const puml = Puml.fromFile(path.join(__dirname, './data/simple.puml'));
-      const output = await puml.generate('ecmascript6');
+      const output = await puml.generate();
       expect(output).to.be.ok;
-      const log = spy();
-      output.print(log);
-      expect(log.calledOnce).to.be.true;
     });
     it('File not found', () => {
       expect(() => Puml.fromFile('not-exists.puml')).to.be.throw;

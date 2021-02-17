@@ -1,8 +1,21 @@
 @startuml
-class Hep {
-    +test(A a, B b)
-    +Query find(A a)
+' comment
+
+component Test <<service>>
+
+note top of Test {
+    variant: Quarkus
 }
-EventEmitter -left-|> Hep
+
+database "database 1"
+
+note bottom of "database 1" {
+    variant: PostgreSQL
+    prop1: Test
+    prop2: Foo
+}
+
+() JDBC - [database 1]
+[Test] .> JDBC
 
 @enduml

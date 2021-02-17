@@ -1,0 +1,1 @@
+{"components":[{"name":"Test","type":"service"}],"databases":[{"name":"database 1","type":"database"}],"notes":[{"name":"Test","props":{"variant":"Quarkus"}},{"name":"database 1","props":{"variant":"PostgreSQL","prop1":"Test","prop2":"Foo"}}],"interfaces":[{"name":"JDBC","component":"database 1"}],"uses":[{"component":"Test","interface":"JDBC"}]}
