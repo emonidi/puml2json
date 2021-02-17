@@ -1,6 +1,6 @@
 {
   "name": "puml2json",
-  "version": "0.0.9",
+  "version": "0.9.1",
   "description": "PlantUML to json generator",
   "main": "index.js",
   "bin": {
@@ -11,7 +11,7 @@
     "test": "mocha",
     "lint": "eslint .",
     "lint-fix": "eslint . --fix",
-    "install": "node node_modules/pegjs/bin/pegjs src/parser/plantuml.pegjs"
+    "install": "pegjs src/parser/plantuml.pegjs"
   },
   "engines": {
     "node": ">=12.0.0"
