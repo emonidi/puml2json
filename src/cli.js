@@ -24,9 +24,9 @@ const parseArgs = argv => program
 const fromStdin = () => {
   process.stdin.resume();
   process.stdin.setEncoding('utf8');
-  return Promise.resolve(new Puml.PlantUmlToJson(process.stdin));
+  return Promise.resolve(new Puml(process.stdin));
 };
-const fromFile = input => Promise.resolve(Puml.PlantUmlToJson.fromFile(input));
+const fromFile = input => Promise.resolve(Puml.fromFile(input));
 
 const getSource = args => {
   if (!args.input) {

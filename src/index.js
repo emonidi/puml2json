@@ -56,4 +56,4 @@ class PlantUmlToJson {
   }
 }
 
-module.exports.PlantUmlToJson = PlantUmlToJson;
+module.exports = PlantUmlToJson;

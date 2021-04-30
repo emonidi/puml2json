@@ -9,7 +9,7 @@ const chaiAsPromised = require('chai-as-promised');
 const { expect } = chai;
 chai.use(chaiAsPromised);
 // modules under test
-const {PlantUmlToJson} = require('../src');
+const PlantUmlToJson = require('../src');
 
 
 describe('pumlgen', () => {
