@@ -1,5 +1,9 @@
-export default class PlantUmlToJson {
-    static fromString(str: string): PlantUmlToJson;
-    static fromFile(str: string): PlantUmlToJson;
-    generate(): Promise<void>;
+declare module "puml2json" {
+    export default class PlantUmlToJson {
+        static fromString(str: string): PlantUmlToJson;
+
+        static fromFile(str: string): PlantUmlToJson;
+
+        generate(): Promise<void>;
+    }
 }

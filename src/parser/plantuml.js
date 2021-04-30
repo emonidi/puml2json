@@ -186,7 +186,7 @@ function peg$parse(input, options) {
       peg$c42 = function(name, archetype) {return {name, type: archetype || "database"};},
       peg$c43 = "note ",
       peg$c44 = peg$literalExpectation("note ", false),
-      peg$c45 = function(name, props) {return {name, props};},
+      peg$c45 = function(ref, props) {return {ref, props};},
       peg$c46 = function(source, target, type) {return {source, target, type};},
       peg$c47 = "left of",
       peg$c48 = peg$literalExpectation("left of", false),

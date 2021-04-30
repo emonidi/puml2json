@@ -53,7 +53,7 @@ componentdeclaration
 databasedeclaration
   = _ "database " _ name:objectname _ archetype:archetypename? {return {name, type: archetype || "database"};}
 notedeclaration
-  = _ "note " _ noteposition _ name:objectname startblock newline props:notelines endblock {return {name, props};}
+  = _ "note " _ noteposition _ ref:objectname startblock newline props:notelines endblock {return {ref, props};}
 linkdeclaration
   = source:componentref _ linktype _ target:componentref _ ":" _ type:text {return {source, target, type};}
 noteposition
