@@ -1,6 +1,6 @@
 {
   "name": "puml2json",
-  "version": "0.9.7",
+  "version": "0.9.8",
   "description": "PlantUML to json generator",
   "main": "./src/index.js",
   "bin": {
