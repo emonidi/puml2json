@@ -1,21 +1,26 @@
 @startuml
-' comment
 
-component Test <<service>>
-
-note top of Test {
-    variant: Quarkus
+database "store 1"
+note bottom of "store 1" {
+    type: MySql
+    datasize: 100kb
 }
 
-database "database 1"
-
-note bottom of "database 1" {
-    variant: PostgreSQL
-    prop1: Test
-    prop2: Foo
+component "service 1" <<service>>
+note bottom of "service 1" {
+    type: spring-boot
+    request-delay: 100ms
+    response-delay: 20ms
 }
 
-() JDBC - [database 1]
-[Test] .> JDBC
+component "service 2" <<service>>
+note bottom of "service 2" {
+    type: Go
+    replicas: 5
+}
+
+[service 1] -> [service 2]: HTTP/REST
+
+[service 2] -> [store 1]: JDBC
 
 @enduml

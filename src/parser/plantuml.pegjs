@@ -3,8 +3,7 @@
         components: [],
         databases: [],
         notes: [],
-        interfaces: [],
-        uses: []
+        links: []
     }
 }
 plantumlfile
@@ -36,8 +35,7 @@ declaration
   = declaration:componentdeclaration { block.components.push(declaration);}
   / declaration:databasedeclaration { block.databases.push(declaration);}
   / declaration:notedeclaration { block.notes.push(declaration);}
-  / declaration:interfacedeclaration { block.interfaces.push(declaration);}
-  / declaration:usesdeclaration { block.uses.push(declaration);}
+  / declaration:linkdeclaration { block.links.push(declaration);}
 noteline
   = _ property:propertyname ":"  _ value:propertyvalue _ newline {return [property, value];}
   / comment newline {return null;}
@@ -48,23 +46,28 @@ headerset
   = _ "header " _ [^\r\n]+ _
 comment
   = _ "'" [^\r\n]*
+text
+  = content:[^\r\n]* {return content.join("");}
 componentdeclaration
   = _ "component " _ name:objectname _ archetype:archetypename? {return {name, type: archetype || "service"};}
 databasedeclaration
   = _ "database " _ name:objectname _ archetype:archetypename? {return {name, type: archetype || "database"};}
 notedeclaration
   = _ "note " _ noteposition _ name:objectname startblock newline props:notelines endblock {return {name, props};}
-interfacedeclaration
-  = _ "() " _ name:objectname _ "-" _ component:componentref _ {return {name, component};}
-usesdeclaration
-  = component:componentref _ ".>" _ iface:objectname _ {return {component, interface: iface};}
+linkdeclaration
+  = source:componentref _ linktype _ target:componentref _ ":" _ type:text {return {source, target, type};}
 noteposition
   = "left of"
   / "right of"
   / "bottom of"
   / "top of"
+linktype
+  = ".>"
+  / "..>"
+  / "->"
+  / "-->"
 id
-  = id:([A-Za-z_][A-Za-z0-9.]*) {return [id[0], id[1].join("")].join("")}
+  = id:([A-Za-z_][A-Za-z0-9\-]*) {return [id[0], id[1].join("")].join("")}
 objectname
   = id
   / "\"" name:[^\"]* "\"" {return name.join(""); }
