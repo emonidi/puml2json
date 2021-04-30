@@ -7,7 +7,7 @@
 a command line utility that convert PlantUML -text file that represent component UML diagram to JSON.
 This fork is based on [puml2code]() .
 
-puml2json supports only a subset of the PlantUML language
+puml2json supports only a subset of the PlantUML language.
 
 ### Installation
 
@@ -33,7 +33,7 @@ $ npm test
 
 **NOTE:**
 
-parser and code templates are not perfect. There is planty of cases that is not yet covered or supported. Basic scenarious should work.
+The parser only supports a small subset of PlantUML features. Have a look at the examples folder.
 
 ### Problems?
 

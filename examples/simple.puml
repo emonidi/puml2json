@@ -1,0 +1,26 @@
+@startuml
+
+database "store 1"
+note bottom of "store 1" {
+    type: MySql
+    datasize: 100kb
+}
+
+component "service 1" <<service>>
+note bottom of "service 1" {
+    type: spring-boot
+    request-delay: 100ms
+    response-delay: 20ms
+}
+
+component "service 2" <<service>>
+note bottom of "service 2" {
+    type: Go
+    replicas: 5
+}
+
+[service 1] -> [service 2]: HTTP/REST
+
+[service 2] -> [store 1]: JDBC
+
+@enduml
