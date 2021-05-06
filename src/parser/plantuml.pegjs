@@ -1,7 +1,6 @@
 {
     var block = {
         components: [],
-        databases: [],
         notes: [],
         links: []
     }
@@ -33,7 +32,7 @@ umlline
   / declaration newline
 declaration
   = declaration:componentdeclaration { block.components.push(declaration);}
-  / declaration:databasedeclaration { block.databases.push(declaration);}
+  / declaration:databasedeclaration { block.components.push(declaration);}
   / declaration:notedeclaration { block.notes.push(declaration);}
   / declaration:linkdeclaration { block.links.push(declaration);}
 noteline
