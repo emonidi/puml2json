@@ -1,6 +1,6 @@
 {
   "name": "@emonidi/puml2json-seq-diagram",
-  "version": "0.9.16",
+  "version": "0.9.17",
   "description": "PlantUML to json generator for sequence diagram",
   "main": "./src/index.js",
   "bin": {
