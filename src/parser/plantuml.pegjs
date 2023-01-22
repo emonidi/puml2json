@@ -4,13 +4,20 @@
     function parseParticipant(type,desc) {
 
     	const split = desc.join("").replace(/\"/ig,"").split(" as ");
-        console.log(split)
-   		block.push({
-        	type:"participant",
-        	participantType:type,
-            name:split[1].trim(),
-            alias:split[0].trim()
-        })
+        if(split[1]){
+          block.push({
+              type:"participant",
+              participantType:type,
+              name:split[1].trim(),
+              alias:split[0].trim()
+          });
+        }else{
+        	 block.push({
+              type:"participant",
+              participantType:type,
+              name:desc.join("")
+          });
+        }
     } 
 }
 plantumlfile
@@ -29,7 +36,7 @@ color
   = [#][0-9a-fA-F]+
 
 string
-  = [A-Za-z_,."(): ]*
+  = [A-Za-z_,."():<>#0-9=;! ]*
 
 event
   = p1:[A-Za-z_,."() ]* arrow:arrow p2:[A-Za-z_,."() ]* [:] msg:message newline {
@@ -130,11 +137,28 @@ end_group
 	= "end group"{
     	block.push({endgroup:true, type:"end_group"})
     }
+    
 
 else
 	= "else " message:string {
     	block.push({else:true,message:message.join(""), type:"else"})
     }
+box
+ = "box " name:string newline{
+ 	let n = name.join("");
+    let split = n.split("#");
+    if(split.length > 1){
+    	block.push({
+        	type:"box",
+            name:split[0],
+            color:"#"+split[1]
+        })
+    }
+ }
+end_box 
+ = "end box" {
+ 	block.push({type:"end_box",end_box:true})
+ }
 umllines
   = lines:umlline*
   
@@ -148,3 +172,5 @@ umlline
   / _ alt newline
   / _ else newline
   / _ end_group newline
+  / _ box 
+  / _ end_box newline

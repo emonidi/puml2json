@@ -162,8 +162,8 @@ function peg$parse(input, options) {
       peg$c18 = peg$classExpectation(["#"], false, false),
       peg$c19 = /^[0-9a-fA-F]/,
       peg$c20 = peg$classExpectation([["0", "9"], ["a", "f"], ["A", "F"]], false, false),
-      peg$c21 = /^[A-Za-z_,."(): ]/,
-      peg$c22 = peg$classExpectation([["A", "Z"], ["a", "z"], "_", ",", ".", "\"", "(", ")", ":", " "], false, false),
+      peg$c21 = /^[A-Za-z_,."():<>#0-9=;! ]/,
+      peg$c22 = peg$classExpectation([["A", "Z"], ["a", "z"], "_", ",", ".", "\"", "(", ")", ":", "<", ">", "#", ["0", "9"], "=", ";", "!", " "], false, false),
       peg$c23 = /^[A-Za-z_,."() ]/,
       peg$c24 = peg$classExpectation([["A", "Z"], ["a", "z"], "_", ",", ".", "\"", "(", ")", " "], false, false),
       peg$c25 = /^[:]/,
@@ -199,7 +199,7 @@ function peg$parse(input, options) {
       peg$c35 = "over ",
       peg$c36 = peg$literalExpectation("over ", false),
       peg$c37 = function(position, participant, message) {
-        	
+        		console.log(position);
               block.push(
               	{
                     type:"note",
@@ -216,6 +216,7 @@ function peg$parse(input, options) {
               block.push(
               	{
                     type:"note",
+                    sameLevel:true,
                     position,
                     participant:participant.join(""),
                     message:message.join("")
@@ -255,7 +256,7 @@ function peg$parse(input, options) {
       peg$c61 = "alt ",
       peg$c62 = peg$literalExpectation("alt ", false),
       peg$c63 = function(message) {
-          	block.push({alt:true,message:message.join(""), type:"alt"})
+          	block.push({else:true,message:message.join(""), type:"alt"})
           },
       peg$c64 = "end group",
       peg$c65 = peg$literalExpectation("end group", false),
@@ -267,6 +268,24 @@ function peg$parse(input, options) {
       peg$c69 = function(message) {
           	block.push({else:true,message:message.join(""), type:"else"})
           },
+      peg$c70 = "box ",
+      peg$c71 = peg$literalExpectation("box ", false),
+      peg$c72 = function(name) {
+       	let n = name.join("");
+          let split = n.split("#");
+          if(split.length > 1){
+          	block.push({
+              	type:"box",
+                  name:split[0],
+                  color:"#"+split[1]
+              })
+          }
+       },
+      peg$c73 = "end box",
+      peg$c74 = peg$literalExpectation("end box", false),
+      peg$c75 = function() {
+       	block.push({type:"end_box",end_box:true})
+       },
 
       peg$currPos          = 0,
       peg$savedPos         = 0,
@@ -1304,6 +1323,61 @@ function peg$parse(input, options) {
     return s0;
   }
 
+  function peg$parsebox() {
+    var s0, s1, s2, s3;
+
+    s0 = peg$currPos;
+    if (input.substr(peg$currPos, 4) === peg$c70) {
+      s1 = peg$c70;
+      peg$currPos += 4;
+    } else {
+      s1 = peg$FAILED;
+      if (peg$silentFails === 0) { peg$fail(peg$c71); }
+    }
+    if (s1 !== peg$FAILED) {
+      s2 = peg$parsestring();
+      if (s2 !== peg$FAILED) {
+        s3 = peg$parsenewline();
+        if (s3 !== peg$FAILED) {
+          peg$savedPos = s0;
+          s1 = peg$c72(s2);
+          s0 = s1;
+        } else {
+          peg$currPos = s0;
+          s0 = peg$FAILED;
+        }
+      } else {
+        peg$currPos = s0;
+        s0 = peg$FAILED;
+      }
+    } else {
+      peg$currPos = s0;
+      s0 = peg$FAILED;
+    }
+
+    return s0;
+  }
+
+  function peg$parseend_box() {
+    var s0, s1;
+
+    s0 = peg$currPos;
+    if (input.substr(peg$currPos, 7) === peg$c73) {
+      s1 = peg$c73;
+      peg$currPos += 7;
+    } else {
+      s1 = peg$FAILED;
+      if (peg$silentFails === 0) { peg$fail(peg$c74); }
+    }
+    if (s1 !== peg$FAILED) {
+      peg$savedPos = s0;
+      s1 = peg$c75();
+    }
+    s0 = s1;
+
+    return s0;
+  }
+
   function peg$parseumllines() {
     var s0, s1;
 
@@ -1499,6 +1573,46 @@ function peg$parse(input, options) {
                       peg$currPos = s0;
                       s0 = peg$FAILED;
                     }
+                    if (s0 === peg$FAILED) {
+                      s0 = peg$currPos;
+                      s1 = peg$parse_();
+                      if (s1 !== peg$FAILED) {
+                        s2 = peg$parsebox();
+                        if (s2 !== peg$FAILED) {
+                          s1 = [s1, s2];
+                          s0 = s1;
+                        } else {
+                          peg$currPos = s0;
+                          s0 = peg$FAILED;
+                        }
+                      } else {
+                        peg$currPos = s0;
+                        s0 = peg$FAILED;
+                      }
+                      if (s0 === peg$FAILED) {
+                        s0 = peg$currPos;
+                        s1 = peg$parse_();
+                        if (s1 !== peg$FAILED) {
+                          s2 = peg$parseend_box();
+                          if (s2 !== peg$FAILED) {
+                            s3 = peg$parsenewline();
+                            if (s3 !== peg$FAILED) {
+                              s1 = [s1, s2, s3];
+                              s0 = s1;
+                            } else {
+                              peg$currPos = s0;
+                              s0 = peg$FAILED;
+                            }
+                          } else {
+                            peg$currPos = s0;
+                            s0 = peg$FAILED;
+                          }
+                        } else {
+                          peg$currPos = s0;
+                          s0 = peg$FAILED;
+                        }
+                      }
+                    }
                   }
                 }
               }
@@ -1517,13 +1631,20 @@ function peg$parse(input, options) {
       function parseParticipant(type,desc) {
 
       	const split = desc.join("").replace(/\"/ig,"").split(" as ");
-        
-     		block.push({
-          	type:"participant",
-          	participantType:type,
-              name:split[1].trim(),
-              alias:split[0].trim()
-          })
+          if(split[1]){
+            block.push({
+                type:"participant",
+                participantType:type,
+                name:split[1].trim(),
+                alias:split[0].trim()
+            });
+          }else{
+          	 block.push({
+                type:"participant",
+                participantType:type,
+                name:desc.join("")
+            });
+          }
       } 
 
 
