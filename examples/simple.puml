@@ -1,26 +1,34 @@
 @startuml
+note left: test note
+participant "app: Application" as app
+participant "cm: ContentManager" as cm
+participant "item: DownloadItem" as item
 
-database "store 1"
-note bottom of "store 1" {
-    type: MySql
-    datasize: 100kb
-}
+activate app
+activate cm
 
-component "service 1" <<service>>
-note bottom of "service 1" {
-    type: spring-boot
-    request-delay: 100ms
-    response-delay: 20ms
-}
+note over app: User enters media info page
 
-component "service 2" <<service>>
-note bottom of "service 2" {
-    type: Go
-    replicas: 5
-}
+note over app: Check if item exists
+app->cm: findItem(itemId)
+cm->cm: lookup(itemId)
 
-[service 1] -> [service 2]: HTTP/REST
+alt item found
+    cm-->app: item
+else not found
+    cm-->app: null
+    app->cm: createItem(itemId, contentURL)
+    cm->item: new(itemId, contentURL)
+    activate item
+    cm-->app: item
 
-[service 2] -> [store 1]: JDBC
+    app->cm: loadMetadata()
+    note over cm:Download and parse manifest, save in db
+    cm-->app: onTracksAvailable
+    cm-->app: onDownloadMetadata
+    note over app: ok
+    end group
 
+    note over app: app is ready to start downloading
+    app->item: startDownload()
 @enduml

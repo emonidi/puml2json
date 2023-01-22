@@ -1,6 +1,7 @@
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![License badge](https://img.shields.io/badge/license-MIT-blue.svg)](https://img.shields.io) 
 
+## Thist is a fork of [Another repo](https://github.com/robbito/puml2json) and its modified to parse PUML seqeuence diagrams!!!
 
 ## PlantUML json generator (puml2json)
 
