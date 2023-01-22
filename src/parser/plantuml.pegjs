@@ -4,7 +4,7 @@
     function parseParticipant(type,desc) {
 
     	const split = desc.join("").replace(/\"/ig,"").split(" as ");
-      
+        console.log(split)
    		block.push({
         	type:"participant",
         	participantType:type,
@@ -62,7 +62,7 @@ participant
 
 note
   = "note " position:"over " participant:[A-Za-z_,."() ]* [:] message:string {
-  	
+  		console.log(position);
         block.push(
         	{
               type:"note",
@@ -77,6 +77,7 @@ note
         block.push(
         	{
               type:"note",
+              sameLevel:true,
               position,
               participant:participant.join(""),
               message:message.join("")
@@ -122,7 +123,7 @@ arrow
 
 alt
 	= "alt " message:string {
-    	block.push({alt:true,message:message.join(""), type:"alt"})
+    	block.push({else:true,message:message.join(""), type:"alt"})
     }
     
 end_group

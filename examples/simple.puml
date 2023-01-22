@@ -30,5 +30,6 @@ else not found
     end group
 
     note over app: app is ready to start downloading
+    / note over cm: OK
     app->item: startDownload()
 @enduml

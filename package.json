@@ -1,11 +1,13 @@
 {
   "name": "@emonidi/puml2json-seq-diagram",
-  "version": "0.9.15",
+  "version": "0.9.16",
   "description": "PlantUML to json generator for sequence diagram",
   "main": "./src/index.js",
   "bin": {
     "puml2json": "./bin/puml2json"
   },
+  "target": "esnext",
+  "module": "commonjs",
   "scripts": {
     "cli": "node src/cli.js",
     "test": "mocha",
