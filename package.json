@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/robbito/puml2json.git"
+    "url": "git+https://github.com/emonidi/puml2json.git"
   },
   "keywords": [
     "plantuml",
