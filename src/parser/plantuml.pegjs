@@ -153,6 +153,11 @@ box
             name:split[0],
             color:"#"+split[1]
         })
+    }else{
+    	 block.push({
+         	type:"box",
+            name:name.join("")
+         })
     }
  }
 end_box 

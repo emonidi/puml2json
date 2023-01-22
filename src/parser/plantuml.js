@@ -279,6 +279,11 @@ function peg$parse(input, options) {
                   name:split[0],
                   color:"#"+split[1]
               })
+          }else{
+          	 block.push({
+               	type:"box",
+                  name:name.join("")
+               })
           }
        },
       peg$c73 = "end box",
