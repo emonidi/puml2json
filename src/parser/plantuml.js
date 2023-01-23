@@ -291,6 +291,11 @@ function peg$parse(input, options) {
       peg$c75 = function() {
        	block.push({type:"end_box",end_box:true})
        },
+      peg$c76 = "==",
+      peg$c77 = peg$literalExpectation("==", false),
+      peg$c78 = function(com) {
+       	block.push({comment:com.join("").replace("==").trim()})
+       },
 
       peg$currPos          = 0,
       peg$savedPos         = 0,
@@ -1383,6 +1388,41 @@ function peg$parse(input, options) {
     return s0;
   }
 
+  function peg$parsecomment() {
+    var s0, s1, s2, s3;
+
+    s0 = peg$currPos;
+    if (input.substr(peg$currPos, 2) === peg$c76) {
+      s1 = peg$c76;
+      peg$currPos += 2;
+    } else {
+      s1 = peg$FAILED;
+      if (peg$silentFails === 0) { peg$fail(peg$c77); }
+    }
+    if (s1 !== peg$FAILED) {
+      s2 = peg$parsestring();
+      if (s2 !== peg$FAILED) {
+        s3 = peg$parse_();
+        if (s3 !== peg$FAILED) {
+          peg$savedPos = s0;
+          s1 = peg$c78(s2);
+          s0 = s1;
+        } else {
+          peg$currPos = s0;
+          s0 = peg$FAILED;
+        }
+      } else {
+        peg$currPos = s0;
+        s0 = peg$FAILED;
+      }
+    } else {
+      peg$currPos = s0;
+      s0 = peg$FAILED;
+    }
+
+    return s0;
+  }
+
   function peg$parseumllines() {
     var s0, s1;
 
@@ -1615,6 +1655,23 @@ function peg$parse(input, options) {
                         } else {
                           peg$currPos = s0;
                           s0 = peg$FAILED;
+                        }
+                        if (s0 === peg$FAILED) {
+                          s0 = peg$currPos;
+                          s1 = peg$parse_();
+                          if (s1 !== peg$FAILED) {
+                            s2 = peg$parsecomment();
+                            if (s2 !== peg$FAILED) {
+                              s1 = [s1, s2];
+                              s0 = s1;
+                            } else {
+                              peg$currPos = s0;
+                              s0 = peg$FAILED;
+                            }
+                          } else {
+                            peg$currPos = s0;
+                            s0 = peg$FAILED;
+                          }
                         }
                       }
                     }

@@ -164,6 +164,12 @@ end_box
  = "end box" {
  	block.push({type:"end_box",end_box:true})
  }
+
+comment
+ = "=="  com:string _ {
+ 	block.push({comment:com.join("").replace("==").trim()})
+ } 
+
 umllines
   = lines:umlline*
   
@@ -179,3 +185,4 @@ umlline
   / _ end_group newline
   / _ box 
   / _ end_box newline
+  / _ comment
