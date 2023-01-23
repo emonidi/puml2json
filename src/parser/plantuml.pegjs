@@ -167,7 +167,12 @@ end_box
 
 comment
  = "=="  com:string _ {
- 	block.push({comment:com.join("").replace("==").trim()})
+ 	block.push(
+    	{
+    		comment:com.join("").replace("==").trim(),
+    		type:"comment"
+        }
+    )
  } 
 
 umllines
