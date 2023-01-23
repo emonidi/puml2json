@@ -294,7 +294,12 @@ function peg$parse(input, options) {
       peg$c76 = "==",
       peg$c77 = peg$literalExpectation("==", false),
       peg$c78 = function(com) {
-       	block.push({comment:com.join("").replace("==").trim()})
+       	block.push(
+          	{
+          		comment:com.join("").replace("==").trim(),
+          		type:"divider"
+              }
+          )
        },
 
       peg$currPos          = 0,
@@ -1388,7 +1393,7 @@ function peg$parse(input, options) {
     return s0;
   }
 
-  function peg$parsecomment() {
+  function peg$parsedivider() {
     var s0, s1, s2, s3;
 
     s0 = peg$currPos;
@@ -1660,7 +1665,7 @@ function peg$parse(input, options) {
                           s0 = peg$currPos;
                           s1 = peg$parse_();
                           if (s1 !== peg$FAILED) {
-                            s2 = peg$parsecomment();
+                            s2 = peg$parsedivider();
                             if (s2 !== peg$FAILED) {
                               s1 = [s1, s2];
                               s0 = s1;

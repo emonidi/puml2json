@@ -165,12 +165,12 @@ end_box
  	block.push({type:"end_box",end_box:true})
  }
 
-comment
+divider
  = "=="  com:string _ {
  	block.push(
     	{
     		comment:com.join("").replace("==").trim(),
-    		type:"comment"
+    		type:"divider"
         }
     )
  } 
@@ -190,4 +190,4 @@ umlline
   / _ end_group newline
   / _ box 
   / _ end_box newline
-  / _ comment
+  / _ divider
